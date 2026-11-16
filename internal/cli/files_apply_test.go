@@ -139,10 +139,22 @@ func TestApplyBothChanged(t *testing.T) {
 				t.Errorf("live file changed: %q", got)
 			}
 			errText := m.Err.String()
-			for _, s := range []string{"H/f.txt", "dot add H/f.txt", "dot apply --force H/f.txt"} {
+			want := []string{"H/f.txt", "both-changed", "refused", "see: dot diff H/f.txt", "dot add <live file>", "dot apply --force H/f.txt"}
+			for _, s := range want {
 				if !strings.Contains(errText, s) {
 					t.Errorf("stderr lacks %q: %q", s, errText)
 				}
+			}
+			if strings.Index(errText, "see: dot diff") > strings.Index(errText, "dot add") {
+				t.Errorf("the diff hint is not first: %q", errText)
+			}
+			// add takes a live path (CMD-12), so a logical name after it does not work as typed.
+			if strings.Contains(errText, "dot add H/f.txt") {
+				t.Errorf("stderr names add with the logical name: %q", errText)
+			}
+			// NF-6, A34: the root value is the live directory.
+			if strings.Contains(m.Out.String()+errText, m.Home) {
+				t.Errorf("output holds the root value (NF-6): %q", m.Out.String()+errText)
 			}
 			if got := filesState(t, m); got != "" {
 				t.Errorf("state %q, want empty", got)

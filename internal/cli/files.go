@@ -237,7 +237,8 @@ func fileApplyOne(c *ctx, name string, force bool) bool {
 		if force {
 			return fileWriteLive(c, info)
 		}
-		c.errf("%s: both-changed; refused. Live wins: dot add %s. Repository wins: dot apply --force %s", name, name, name)
+		// The live path holds a root value, so the hint names the argument kind only (NF-6, A34).
+		c.errf("%s: both-changed; refused; see: dot diff %s; then: dot add <live file> (live wins) or dot apply --force %s (repository wins)", name, name, name)
 		return false
 	case core.Unresolved:
 		c.errf("%s: unresolved: %s", name, strings.Join(info.Reasons, "; "))
