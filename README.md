@@ -22,6 +22,7 @@
 - [How capture works](#how-capture-works)
 - [Manual fixes](#manual-fixes)
 - [Limits and non-goals](#limits-and-non-goals)
+- [License](#license)
 
 ## Install
 
@@ -728,3 +729,9 @@ Other limits:
 - To remove or rename a tracked file, use git in the repository, for example `git rm files/VIM/.gvimrc` or `git mv`, then run `dot push`. The live files on all machines stay. `dot` removes the state entry of a file that is no longer tracked.
 - `dot` does not merge. Git merges the repository copies at `git pull`.
 - `dot` does not convert encodings or line ends.
+
+## License
+
+`dot` has the MIT No Attribution license (SPDX identifier `MIT-0`). The full text is in [`LICENSE`](LICENSE).
+
+You can use, copy, change and distribute the software for any purpose. You do not have to keep the copyright notice or the license text. The software has no warranty.
