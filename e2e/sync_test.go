@@ -20,7 +20,7 @@ func (p *pair) roundTrip() (pushOut, pushErr string) {
 	return pushOut, pushErr
 }
 
-// E1. PATH-1, PATH-3, CMD-10, CMD-11, CMD-12, CMD-18, CMD-19, CMD-20, ST-5.
+// E1. PATH-1, PATH-3, PATH-5, CMD-10, CMD-11, CMD-12, CMD-18, CMD-19, CMD-20, ST-5.
 func TestE1PlainFileDifferentRoots(t *testing.T) {
 	name := cfg("app/settings.ini")
 	content := "[main]\nalpha = 1\nbeta = 2\n"
