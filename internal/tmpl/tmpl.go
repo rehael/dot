@@ -1,25 +1,17 @@
 // Package tmpl scans, renders and captures placeholders.
+//
+// All operations work on bytes, so content in an encoding that is not
+// ASCII-compatible has no placeholders and passes through unchanged (VAR-9).
 package tmpl
 
+// Delims are the placeholder delimiters from dot.conf (VAR-5).
 type Delims struct{ Prefix, Suffix string }
 
+// Lookup returns the value of a variable and whether it is defined.
 type Lookup func(name string) (value string, ok bool)
 
+// Drop is a placeholder that a capture could not keep (SYNC-10, SYNC-15).
 type Drop struct {
 	Name string
-	Line int
-}
-
-func (d Delims) Validate() error { panic("not implemented") }
-
-func ValidName(name string) bool { panic("not implemented") }
-
-func Names(d Delims, content []byte) []string { panic("not implemented") }
-
-func Render(d Delims, content []byte, look Lookup) (out []byte, undefined []string) {
-	panic("not implemented")
-}
-
-func Capture(d Delims, source, live []byte, look Lookup) (newSource []byte, dropped []Drop, err error) {
-	panic("not implemented")
+	Line int // 1-based, in the live file
 }
