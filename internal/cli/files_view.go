@@ -177,7 +177,10 @@ func fileGitDiff(c *ctx, name string, rendered, live []byte) (err error) {
 		}
 	}
 	g := gitx.Git{Dir: tmp, Stdout: c.env.Stdout, Stderr: c.env.Stderr}
-	code, err := g.Run("diff", "--no-index", "--no-prefix", "--", repoSide, liveSide)
+	// File content is bytes (D8): a core.autocrlf of the user would hide a
+	// difference that is only LF against CRLF.
+	code, err := g.Run("-c", "core.autocrlf=false", "-c", "core.safecrlf=false",
+		"diff", "--no-index", "--no-prefix", "--", repoSide, liveSide)
 	if err != nil {
 		return err
 	}

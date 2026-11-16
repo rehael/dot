@@ -209,6 +209,31 @@ func TestDiffCaptureWouldFail(t *testing.T) {
 	}
 }
 
+// CMD-17, D8: line ends are bytes; core.autocrlf of the user must not hide a
+// difference that is only LF against CRLF.
+func TestDiffLineEndsIgnoreAutocrlf(t *testing.T) {
+	m := filesSetup(t)
+	cfg := os.Getenv("GIT_CONFIG_GLOBAL")
+	if cfg == "" {
+		t.Fatal("GIT_CONFIG_GLOBAL is not set; isolateGit did not run")
+	}
+	writeFile(t, cfg, "[core]\n\tautocrlf = true\n")
+	m.track("H/g.txt", "a\nb\n")
+	filesWriteState(t, m, filesStateLine("H/g.txt", "a\nb\n"))
+	writeFile(t, filesLive(m, "g.txt"), "a\r\nb\r\n")
+
+	filesWantCode(t, m, m.run("diff"), 0)
+	out := m.Out.String()
+	for _, s := range []string{"live-changed H/g.txt\n", "-a\n", "-b\n", "+a\r\n", "+b\r\n"} {
+		if !strings.Contains(out, s) {
+			t.Errorf("stdout lacks %q:\n%q", s, out)
+		}
+	}
+	if strings.Contains(m.Err.String(), "will be replaced") {
+		t.Errorf("stderr has a line-end conversion warning: %q", m.Err.String())
+	}
+}
+
 // CMD-4, CMD-17: with an argument, only the matches are shown.
 func TestDiffSelected(t *testing.T) {
 	m := filesSetup(t)
