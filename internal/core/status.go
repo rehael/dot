@@ -7,7 +7,7 @@ import (
 	"io/fs"
 	"os"
 
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
 type Status int

@@ -10,10 +10,10 @@ import (
 	"sort"
 	"strings"
 
-	"dot/internal/core"
-	"dot/internal/gitx"
-	"dot/internal/kv"
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/core"
+	"github.com/rehael/dot/internal/gitx"
+	"github.com/rehael/dot/internal/kv"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
 const (

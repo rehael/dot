@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"sort"
 
-	"dot/internal/kv"
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/kv"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
 type Var struct{ Name, Value, Origin string }

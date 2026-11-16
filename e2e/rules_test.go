@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/core"
+	"github.com/rehael/dot/internal/core"
 )
 
 // E8. SYNC-4, CMD-14, CMD-16, CMD-17, CMD-18.

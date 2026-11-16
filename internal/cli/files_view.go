@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"dot/internal/core"
-	"dot/internal/gitx"
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/core"
+	"github.com/rehael/dot/internal/gitx"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
 // cmdMeta implements CMD-16. It is one of the two commands that print

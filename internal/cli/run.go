@@ -6,11 +6,11 @@ import (
 	"os/exec"
 	"strings"
 
-	"dot/internal/core"
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/core"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
-const version = "0.1.0"
+const version = "0.1.1"
 
 const (
 	exitOK    = 0

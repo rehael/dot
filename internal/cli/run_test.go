@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/core"
+	"github.com/rehael/dot/internal/core"
 )
 
 var allCommands = []string{"init", "register", "add", "edit", "var", "check", "meta", "diff", "apply", "push", "pull"}

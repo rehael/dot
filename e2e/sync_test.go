@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/core"
+	"github.com/rehael/dot/internal/core"
 )
 
 // roundTrip publishes the live edits of A and writes them on B: push on A,

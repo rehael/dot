@@ -9,9 +9,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"dot/internal/gitx"
-	"dot/internal/kv"
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/gitx"
+	"github.com/rehael/dot/internal/kv"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
 const (

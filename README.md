@@ -29,9 +29,15 @@
 
 Requirement: git on `PATH`. `dot` starts the `git` executable. It has no embedded git library.
 
-Use a released executable, or build from source.
+Use a released executable, install with the Go tool, or build from source.
 
 Released executable (Windows, x86-64): download `dot-<tag>-windows-amd64.zip` from the [releases page](https://github.com/rehael/dot/releases). The archive holds `dot.exe`, `LICENSE` and `README.md`. The file `SHA256SUMS` of the release has the SHA-256 hash of the archive. Extract `dot.exe` to a directory that is on `PATH`.
+
+Install with the Go tool (all systems): Go 1.27 or later is necessary. This command builds `dot` and puts it in the Go executable directory (`go env GOBIN`, or `bin` in `go env GOPATH`), which must be on `PATH`:
+
+```powershell
+go install github.com/rehael/dot@latest
+```
 
 Build from source (all systems): Go 1.27 or later is necessary. Run this command in the source directory, then copy `dot.exe` to a directory that is on `PATH`:
 
@@ -614,7 +620,7 @@ dot version
 ```
 
 ```text
-dot 0.1.0
+dot 0.1.1
 ```
 
 ## How capture works

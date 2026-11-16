@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/core"
+	"github.com/rehael/dot/internal/core"
 )
 
 // setupEditorOut names the file to which TestVarEditorHelper writes its

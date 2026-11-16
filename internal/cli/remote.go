@@ -4,9 +4,9 @@ import (
 	"errors"
 	"strings"
 
-	"dot/internal/core"
-	"dot/internal/gitx"
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/core"
+	"github.com/rehael/dot/internal/gitx"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
 // remoteCapture holds one capture result until all captures are known (SYNC-14).

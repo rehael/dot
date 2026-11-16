@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"dot/internal/cli"
-	"dot/internal/core"
+	"github.com/rehael/dot/internal/cli"
+	"github.com/rehael/dot/internal/core"
 )
 
 func main() {

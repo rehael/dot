@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/core"
+	"github.com/rehael/dot/internal/core"
 )
 
 // setupRepo makes the default repository of m without the init command.

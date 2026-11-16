@@ -11,10 +11,10 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/cli"
-	"dot/internal/core"
-	"dot/internal/gitx"
-	"dot/internal/kv"
+	"github.com/rehael/dot/internal/cli"
+	"github.com/rehael/dot/internal/core"
+	"github.com/rehael/dot/internal/gitx"
+	"github.com/rehael/dot/internal/kv"
 )
 
 // rootVar is the root variable of most tracked files. Each machine gives it a

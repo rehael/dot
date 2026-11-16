@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/core"
-	"dot/internal/gitx"
+	"github.com/rehael/dot/internal/core"
+	"github.com/rehael/dot/internal/gitx"
 )
 
 // remoteLive returns the live path of a file below root H of m.

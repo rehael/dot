@@ -10,7 +10,7 @@ import (
 	"sort"
 	"strings"
 
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
 // foldCase is the PATH-3 rule: Windows file names compare without case.

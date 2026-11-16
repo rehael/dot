@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"dot/internal/core"
-	"dot/internal/tmpl"
+	"github.com/rehael/dot/internal/core"
+	"github.com/rehael/dot/internal/tmpl"
 )
 
 // cmdAdd implements CMD-12.

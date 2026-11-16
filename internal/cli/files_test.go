@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/core"
+	"github.com/rehael/dot/internal/core"
 )
 
 // filesSecret is a variable value that only meta may print (NF-6).

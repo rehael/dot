@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"dot/internal/core"
-	"dot/internal/gitx"
-	"dot/internal/kv"
+	"github.com/rehael/dot/internal/core"
+	"github.com/rehael/dot/internal/gitx"
+	"github.com/rehael/dot/internal/kv"
 )
 
 // isolateGit keeps git away from the configuration of the real user (TEST-1).
