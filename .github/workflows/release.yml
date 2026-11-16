@@ -1,0 +1,104 @@
+name: build
+
+# Each push to master and each pull request: test and build on Windows.
+# A tag v<version> also publishes the archive as a release.
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    env:
+      CGO_ENABLED: '0'
+      TARGET: windows-amd64
+    steps:
+      # Git for Windows converts to CRLF by default, and gofmt reports such files.
+      - name: Keep line ends
+        run: git config --global core.autocrlf false
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      # The archive name promises a platform; a changed runner image must not break that silently.
+      - name: Check the platform of the runner
+        run: test "$(go env GOOS)-$(go env GOARCH)" = "$TARGET"
+
+      - name: Format
+        run: |
+          out="$(gofmt -l .)"
+          echo "$out"
+          test -z "$out"
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test -count=1 ./...
+
+      - name: Build
+        run: go build -trimpath -ldflags "-s -w" -o dist/dot.exe .
+
+      - name: Check the version against the tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          got="$(dist/dot.exe version)"
+          echo "$got"
+          test "$got" = "dot ${GITHUB_REF_NAME#v}"
+
+      - name: Package
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then label="$GITHUB_REF_NAME"; else label="${GITHUB_SHA::7}"; fi
+          cp LICENSE README.md dist/
+          cd dist
+          7z a -tzip "../dot-$label-$TARGET.zip" dot.exe LICENSE README.md
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: windows-amd64
+          path: dot-*-windows-amd64.zip
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Checksums
+        run: |
+          cd dist
+          sha256sum dot-* > SHA256SUMS
+          cat SHA256SUMS
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "$GITHUB_REF_NAME"
+          --repo "$GITHUB_REPOSITORY"
+          --verify-tag
+          --title "dot ${GITHUB_REF_NAME#v}"
+          --generate-notes
+          dist/*
