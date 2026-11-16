@@ -2,7 +2,7 @@
 
 Date: 2026-11-16. Platform: Windows 11, Go 1.27.4, git 2.56.0. Commit under test: see the first lines of the gate output.
 
-This file records the phase 4 gate of `dot-requirements.md` (task P4-C): the commands and their raw output. "Verified" means that the command ran on the real path and gave the output shown.
+This file records the verification of the first complete version: the commands and their raw output. "Verified" means that the command ran on the real path and gave the output shown.
 
 Not verified: no test ran on Linux or macOS. For Linux, only the build and `go vet` ran.
 
@@ -73,17 +73,17 @@ The run uses a byte-identical copy of the `dot.exe` of the gate above. It uses t
 
 Exit codes that are not 0 are expected at these steps:
 
-- `check` and `pull` before `register` – code 1 (CMD-3).
-- `check` on machine B before its variables exist – code 1 (CMD-15).
-- `push` with a capture failure – code 1 (SYNC-11, SYNC-14).
-- `apply` on a `both-changed` file – code 1 (CMD-18).
-- An unknown command – code 2 (CMD-5).
+- `check` and `pull` before `register` – code 1.
+- `check` on machine B before its variables exist – code 1.
+- `push` with a capture failure – code 1.
+- `apply` on a `both-changed` file – code 1.
+- An unknown command – code 2.
 
 Script:
 
 ```bash
 #!/usr/bin/env bash
-# Live run of the built dot.exe (P4-C). Usage: live-run.sh <path to dot.exe> <work directory>
+# Live run of the built dot.exe. Usage: live-run.sh <path to dot.exe> <work directory>
 set -u
 DOT="$1"
 W="$2"
@@ -486,6 +486,6 @@ b4eb0b3 Merge branch 'master' of <W>\remote
 
 ## Additional checks during the run
 
-- `git pull` without a pull strategy: with an empty git configuration and diverged branches, `dot pull` returned code 128 with the git message `fatal: Need to specify how to reconcile divergent branches.` This is open item O1 in section 15 of `dot-requirements.md`.
-- `core.autocrlf = true`: a round trip of one CRLF file and one LF file between two machines kept the bytes equal in both live files and in the repository copies (`cmp`). Before the fix of decision A40, `dot diff` did not show a difference of line ends; the regression test is `TestDiffLineEndsIgnoreAutocrlf`.
-- Read-only live file on Windows: before the fix of decision A33, `os.Rename` over a read-only file returned `Access is denied.`; the regression test is `TestWriteAtomic_SYNC6_ReadOnly`.
+- `git pull` without a pull strategy: with an empty git configuration and diverged branches, `dot pull` returned code 128 with the git message `fatal: Need to specify how to reconcile divergent branches.` `README.md` gives the pull strategy as a required step.
+- `core.autocrlf = true`: a round trip of one CRLF file and one LF file between two machines kept the bytes equal in both live files and in the repository copies (`cmp`). Before a fix, `dot diff` did not show a difference of line ends; the regression test is `TestDiffLineEndsIgnoreAutocrlf`.
+- Read-only live file on Windows: before a fix, `os.Rename` over a read-only file returned `Access is denied.`; the regression test is `TestWriteAtomic_SYNC6_ReadOnly`.
