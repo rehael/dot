@@ -160,7 +160,7 @@ func remoteSync(c *ctx, message string) (code int, ok bool) {
 			c.w.SetHash(info.Name, info.Live)
 		case core.BothChanged:
 			// add takes a live path; printing it would print a root value (NF-6).
-			c.warnf("%s: both-changed, not captured; see: dot diff %s; then: dot add <live file> (live wins) or dot apply %s --force (repository wins)", info.Name, info.Name, info.Name)
+			c.warnf("%s: both-changed, not captured; see: dot diff %s; then: dot add <live file> (live wins) or dot apply --force %s (repository wins)", info.Name, info.Name, info.Name)
 		}
 	}
 	if err := c.w.SaveState(); err != nil {
