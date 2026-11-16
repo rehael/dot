@@ -56,6 +56,42 @@ func TestWriteAtomic_SYNC5_FailureCleanup(t *testing.T) {
 	}
 }
 
+// SYNC-6: a read-only live file is replaced and stays read-only. Windows
+// refuses a rename over a read-only file unless WriteAtomic handles it.
+func TestWriteAtomic_SYNC6_ReadOnly(t *testing.T) {
+	root := t.TempDir()
+	path := filepath.Join(root, "ro.txt")
+	writeFile(t, path, "old")
+	if err := os.Chmod(path, 0o444); err != nil {
+		t.Fatal(err)
+	}
+	// t.TempDir cannot remove a read-only file on Windows.
+	t.Cleanup(func() { _ = os.Chmod(path, 0o644) })
+	before, err := os.Stat(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if before.Mode().Perm()&0o200 != 0 {
+		t.Fatalf("setup: file is writable: %v", before.Mode().Perm())
+	}
+	if err := WriteAtomic(path, []byte("new")); err != nil {
+		t.Fatalf("WriteAtomic: %v", err)
+	}
+	if got := readFile(t, path); got != "new" {
+		t.Errorf("content = %q", got)
+	}
+	after, err := os.Stat(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if after.Mode().Perm() != before.Mode().Perm() {
+		t.Errorf("perm = %v, want %v", after.Mode().Perm(), before.Mode().Perm())
+	}
+	if names := dirNames(t, root); len(names) != 1 || names[0] != "ro.txt" {
+		t.Errorf("directory = %v", names)
+	}
+}
+
 // SYNC-6: an existing file keeps its permission bits; a new file gets 0644.
 // Each expectation comes from the platform, because Windows keeps only the
 // read-only bit.
