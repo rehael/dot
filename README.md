@@ -22,22 +22,22 @@
 - [How capture works](#how-capture-works)
 - [Manual fixes](#manual-fixes)
 - [Limits and non-goals](#limits-and-non-goals)
+- [Release procedure](#release-procedure)
 - [License](#license)
 
 ## Install
 
-Requirements:
+Requirement: git on `PATH`. `dot` starts the `git` executable. It has no embedded git library.
 
-- Go 1.27 or later, to build.
-- Git on `PATH`. `dot` starts the `git` executable. It has no embedded git library.
+Use a released executable, or build from source.
 
-Build the executable in the source directory:
+Released executable (Windows, x86-64): download `dot-<tag>-windows-amd64.zip` from the [releases page](https://github.com/rehael/dot/releases). The archive holds `dot.exe`, `LICENSE` and `README.md`. The file `SHA256SUMS` of the release has the SHA-256 hash of the archive. Extract `dot.exe` to a directory that is on `PATH`.
+
+Build from source (all systems): Go 1.27 or later is necessary. Run this command in the source directory, then copy `dot.exe` to a directory that is on `PATH`:
 
 ```powershell
 go build -o dot.exe .
 ```
-
-Copy `dot.exe` to a directory that is on `PATH`.
 
 Configure git once on each machine:
 
@@ -729,6 +729,23 @@ Other limits:
 - To remove or rename a tracked file, use git in the repository, for example `git rm files/VIM/.gvimrc` or `git mv`, then run `dot push`. The live files on all machines stay. `dot` removes the state entry of a file that is no longer tracked.
 - `dot` does not merge. Git merges the repository copies at `git pull`.
 - `dot` does not convert encodings or line ends.
+
+## Release procedure
+
+The workflow `.github/workflows/release.yml` runs on each push to `master` and on each pull request. On Windows it runs `gofmt`, `go vet` and the tests, then builds the executable.
+
+To publish a release:
+
+1. Set `version` in `internal/cli/run.go` to the new version, for example `0.2.0`.
+2. Commit and push `master`. Wait until the workflow passes.
+3. Create and push the tag. The tag is `v` plus the version:
+
+   ```powershell
+   git tag -a v0.2.0 -m "dot 0.2.0"
+   git push origin v0.2.0
+   ```
+
+For a tag, the workflow also checks that the output of `dot version` is equal to the tag. Then it publishes a release with the Windows archive and `SHA256SUMS`. If a check fails, no release is published.
 
 ## License
 
